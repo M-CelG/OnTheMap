@@ -8,12 +8,19 @@
 
 /* Begin PBXBuildFile section */
 		BD543BA01C093D030059280B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543B9F1C093D030059280B /* AppDelegate.swift */; };
-		BD543BA21C093D030059280B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BA11C093D030059280B /* ViewController.swift */; };
+		BD543BA21C093D030059280B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BA11C093D030059280B /* LoginViewController.swift */; };
 		BD543BA51C093D030059280B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD543BA31C093D030059280B /* Main.storyboard */; };
 		BD543BA71C093D030059280B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BD543BA61C093D030059280B /* Assets.xcassets */; };
 		BD543BAA1C093D030059280B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD543BA81C093D030059280B /* LaunchScreen.storyboard */; };
 		BD543BB51C093D030059280B /* On_The_MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BB41C093D030059280B /* On_The_MapTests.swift */; };
 		BD543BC01C093D030059280B /* On_The_MapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BBF1C093D030059280B /* On_The_MapUITests.swift */; };
+		BDE715631C09EE06003BDE12 /* UdacityParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE715621C09EE06003BDE12 /* UdacityParseClient.swift */; };
+		BDE715651C09EF0C003BDE12 /* UdacityStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE715641C09EF0C003BDE12 /* UdacityStudent.swift */; };
+		BDE715671C09F075003BDE12 /* UdacityParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE715661C09F075003BDE12 /* UdacityParseConstants.swift */; };
+		BDE715691C0B44F1003BDE12 /* WebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE715681C0B44F1003BDE12 /* WebViewController.swift */; };
+		BDE7156B1C0B52DB003BDE12 /* UdacityParseConvenience.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE7156A1C0B52DB003BDE12 /* UdacityParseConvenience.swift */; };
+		BDE7156D1C0C930C003BDE12 /* mapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE7156C1C0C930C003BDE12 /* mapViewController.swift */; };
+		BDE7156F1C10ACB7003BDE12 /* tableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE7156E1C10ACB7003BDE12 /* tableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,7 +43,7 @@
 /* Begin PBXFileReference section */
 		BD543B9C1C093D030059280B /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD543B9F1C093D030059280B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		BD543BA11C093D030059280B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		BD543BA11C093D030059280B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		BD543BA41C093D030059280B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BD543BA61C093D030059280B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BD543BA91C093D030059280B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -47,6 +54,13 @@
 		BD543BBB1C093D030059280B /* On The MapUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "On The MapUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD543BBF1C093D030059280B /* On_The_MapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = On_The_MapUITests.swift; sourceTree = "<group>"; };
 		BD543BC11C093D030059280B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BDE715621C09EE06003BDE12 /* UdacityParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityParseClient.swift; sourceTree = "<group>"; };
+		BDE715641C09EF0C003BDE12 /* UdacityStudent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudent.swift; sourceTree = "<group>"; };
+		BDE715661C09F075003BDE12 /* UdacityParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityParseConstants.swift; sourceTree = "<group>"; };
+		BDE715681C0B44F1003BDE12 /* WebViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebViewController.swift; sourceTree = "<group>"; };
+		BDE7156A1C0B52DB003BDE12 /* UdacityParseConvenience.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityParseConvenience.swift; sourceTree = "<group>"; };
+		BDE7156C1C0C930C003BDE12 /* mapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = mapViewController.swift; sourceTree = "<group>"; };
+		BDE7156E1C10ACB7003BDE12 /* tableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = tableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -97,8 +111,9 @@
 		BD543B9E1C093D030059280B /* On The Map */ = {
 			isa = PBXGroup;
 			children = (
+				BD543BCE1C093D750059280B /* Controllers */,
+				BD543BCD1C093D620059280B /* Model */,
 				BD543B9F1C093D030059280B /* AppDelegate.swift */,
-				BD543BA11C093D030059280B /* ViewController.swift */,
 				BD543BA31C093D030059280B /* Main.storyboard */,
 				BD543BA61C093D030059280B /* Assets.xcassets */,
 				BD543BA81C093D030059280B /* LaunchScreen.storyboard */,
@@ -123,6 +138,36 @@
 				BD543BC11C093D030059280B /* Info.plist */,
 			);
 			path = "On The MapUITests";
+			sourceTree = "<group>";
+		};
+		BD543BCD1C093D620059280B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				BDE715611C09ED79003BDE12 /* Client */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
+		BD543BCE1C093D750059280B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				BD543BA11C093D030059280B /* LoginViewController.swift */,
+				BDE715681C0B44F1003BDE12 /* WebViewController.swift */,
+				BDE7156C1C0C930C003BDE12 /* mapViewController.swift */,
+				BDE7156E1C10ACB7003BDE12 /* tableViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		BDE715611C09ED79003BDE12 /* Client */ = {
+			isa = PBXGroup;
+			children = (
+				BDE715621C09EE06003BDE12 /* UdacityParseClient.swift */,
+				BDE715641C09EF0C003BDE12 /* UdacityStudent.swift */,
+				BDE715661C09F075003BDE12 /* UdacityParseConstants.swift */,
+				BDE7156A1C0B52DB003BDE12 /* UdacityParseConvenience.swift */,
+			);
+			name = Client;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -256,8 +301,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BD543BA21C093D030059280B /* ViewController.swift in Sources */,
+				BDE7156B1C0B52DB003BDE12 /* UdacityParseConvenience.swift in Sources */,
+				BD543BA21C093D030059280B /* LoginViewController.swift in Sources */,
+				BDE715691C0B44F1003BDE12 /* WebViewController.swift in Sources */,
+				BDE715651C09EF0C003BDE12 /* UdacityStudent.swift in Sources */,
+				BDE715671C09F075003BDE12 /* UdacityParseConstants.swift in Sources */,
+				BDE715631C09EE06003BDE12 /* UdacityParseClient.swift in Sources */,
+				BDE7156F1C10ACB7003BDE12 /* tableViewController.swift in Sources */,
 				BD543BA01C093D030059280B /* AppDelegate.swift in Sources */,
+				BDE7156D1C0C930C003BDE12 /* mapViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -482,6 +534,7 @@
 				BD543BC61C093D030059280B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BD543BC71C093D030059280B /* Build configuration list for PBXNativeTarget "On The MapTests" */ = {
 			isa = XCConfigurationList;
@@ -490,6 +543,7 @@
 				BD543BC91C093D030059280B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		BD543BCA1C093D030059280B /* Build configuration list for PBXNativeTarget "On The MapUITests" */ = {
 			isa = XCConfigurationList;
@@ -498,6 +552,7 @@
 				BD543BCC1C093D030059280B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
