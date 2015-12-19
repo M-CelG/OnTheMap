@@ -23,7 +23,6 @@ extension UdacityParseClient {
             ]
             ]
         
-        
         udacityLoginDataTask(method, jsonBody: httpBody){results, error in
             if let error = error {
                 print("Loging Failed with Udacity:\(error)")
@@ -86,4 +85,72 @@ extension UdacityParseClient {
             }
         }
     }
+    
+    //Getting User Data and parsing it
+    func getUserPublicData(completionHandler: (success: Bool, error: NSError?) ->Void) {
+        guard let userID = UdacityParseClient.sharedInstance().userID else {
+            print("Unable to get User ID")
+            completionHandler(success: false, error: NSError(domain: "User ID not found", code: 4, userInfo: [NSLocalizedDescriptionKey: "Missing User ID from login process"]))
+            return
+        }
+        
+        getStudentPublicDataTask(userID) {data, error in
+        
+            if error != nil {
+                print("Error in getting user public data")
+                completionHandler(success: false, error: error)
+                return
+            }
+            
+            if let newData = data![UdacityParseClient.jsonResponse.user] as? [String: AnyObject] {
+                
+                print("\(newData)")
+  
+                if let firstName = newData[UdacityParseClient.jsonResponse.firstName] as? String {
+                    UdacityParseClient.sharedInstance().firstName = firstName
+                    print("Here is User's first name: \(firstName)")
+                }
+                
+                if let lastName = newData[UdacityParseClient.jsonResponse.lastName] as? String {
+                    UdacityParseClient.sharedInstance().lastName = lastName
+                    print("Here is User's last name: \(lastName)")
+                    completionHandler(success: true, error: nil)
+                }
+                
+            }
+            
+            
+            
+
+        }
+    }
+    
+    func getUserStudentData(completionHandler:(success: Bool, error: NSError?) -> Void) {
+        
+        let parameters = [
+            "where": "{\"\(UdacityParseClient.StudentKey.UniqueKey)\": \"\(UdacityParseClient.sharedInstance().userID!)\"}"
+        ]
+        
+        getStudentDataTask("", parameters: parameters) {results, error in
+            if error != nil {
+                print("Unable to get prior location information for the student:\(error)")
+            }
+            
+            print("\(results)")
+            guard let result = results[UdacityParseClient.jsonResponse.results] as? [[String : AnyObject]] else {
+                completionHandler(success: false, error: NSError(domain: "Get Student Data", code: 5, userInfo: [NSLocalizedDescriptionKey: "Unable to get results from Student location entry"]))
+                return
+            }
+            print("\(result)")
+            let studentResult = result[0]
+            print("\(studentResult)")
+            guard let resultObjectID = studentResult[UdacityParseClient.StudentKey.ObjectID] as? String else {
+                completionHandler(success: false, error: NSError(domain: "Get Student Data", code: 5, userInfo: [NSLocalizedDescriptionKey: "Unable to get Object ID from Student location entry"]))
+                return
+            }
+            
+            UdacityParseClient.sharedInstance().objectID = resultObjectID
+        }
+    }
+
 }

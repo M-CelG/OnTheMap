@@ -20,6 +20,12 @@ class UdacityParseClient: NSObject {
     var sessionID: String? = nil
     //User ID
     var userID: String? = nil
+    //User First Name
+    var firstName: String? = nil
+    //User Last Name
+    var lastName: String? = nil
+    //Object ID
+    var objectID: String? = nil
     
     override init() {
         session = NSURLSession.sharedSession()
@@ -31,6 +37,7 @@ class UdacityParseClient: NSObject {
         //Create URL from paramters passed to get Task
         let url = UdacityParseClient.Constants.BaseParseURL + method + UdacityParseClient.urlPartFromParameters(parameters)
         let requestURL = NSURL(string: url)
+        print(url)
         
         let request = NSMutableURLRequest(URL: requestURL!)
         request.addValue(UdacityParseClient.Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
@@ -77,7 +84,7 @@ class UdacityParseClient: NSObject {
         //Create url String from base URL and provided method and parameters
         let url = UdacityParseClient.Constants.BaseUdacityURl + method
         let requestURL = NSURL(string: url)
-        print(url)
+
         //Create Request
         let request = NSMutableURLRequest(URL: requestURL!)
         request.HTTPMethod = "POST"
@@ -86,17 +93,30 @@ class UdacityParseClient: NSObject {
 
         do {
             request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(jsonBody, options: .PrettyPrinted)
-            let requestJson = NSString(data: request.HTTPBody!, encoding: NSUTF8StringEncoding)
-            print("here is the json:\(requestJson)")
         } catch {
             print("Error During creating HTTPBody from jsonBody: \(error)")
+            let userInfo = [NSLocalizedDescriptionKey: "Login Failed - Unable to create Request.HTTPBody"]
+            completionHandler(results: nil, error: NSError(domain: "Request.HttpBody", code: 0, userInfo: userInfo))
         }
         
         //Creat Task to send request
         let task = session.dataTaskWithRequest(request) {data, response, downloadError in
             if downloadError != nil {
-                print("Unable to login as POST request resulted in Error: \(downloadError)")
                 completionHandler(results: nil, error: downloadError)
+            }
+            
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                if let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode == 403 {
+                    let userInfo = [NSLocalizedDescriptionKey: "Invalid Email and/or Password"]
+                    completionHandler(results: nil, error: NSError(domain: "Login", code: 0, userInfo: userInfo))
+                } else if let response = response {
+                    let userInfo = [NSLocalizedDescriptionKey: "Login Failed - Response StatusCode -\((response as! NSHTTPURLResponse).statusCode)"]
+                    completionHandler(results: nil, error: NSError(domain: "Login", code: 0, userInfo: userInfo))
+                } else {
+                    let userInfo = [NSLocalizedDescriptionKey: "Login failed - Invalid Response from server"]
+                    completionHandler(results: nil, error: NSError(domain: "Login", code: 0, userInfo: userInfo))
+                }
+                return
             }
             
             print("Here is response code: \((response as? NSHTTPURLResponse)?.statusCode)")
@@ -117,24 +137,116 @@ class UdacityParseClient: NSObject {
         return task
     }
     
-//    func postParseDataTask(method: String, parameters: [String: AnyObject], jsonBody: [String: AnyObject], completioHandler:(results: AnyObject!, error: NSError?)-> Void) -> NSURLSessionDataTask {
-//        
-//    }
-//    
-//    func getParseDataTask (method: String, parameters: [String: AnyObject], completionHandler: (results: AnyObject!, error: NSError?) -> Void) -> NSURLSessionDataTask
-//    
+    func getStudentPublicDataTask(userID: String, completionHandler:((data: AnyObject?, error: NSError?) -> Void)) -> NSURLSessionDataTask {
+        
+        //Create URL
+        let url = UdacityParseClient.Constants.BaseUdacityURl + UdacityParseClient.Methods.UdacityUsers + userID
+        let requestURL = NSURL(string: url)
+        print(url)
+        
+        //Create Request
+        let request = NSMutableURLRequest(URL: requestURL!)
+        
+        //Create task
+        let task = session.dataTaskWithRequest(request) {data, response, error in
+            if error != nil {
+                print("Error Encountered during the user public task")
+                completionHandler(data: nil, error: error)
+                return
+            }
+            
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                if let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode == 400 {
+                    completionHandler(data: nil, error: NSError(domain: "Get User Data", code: 4, userInfo: [NSLocalizedDescriptionKey: "Response code 400 received: \(response)"]))
+                    return
+                } else if let response = response {
+                    completionHandler(data: nil, error: NSError(domain: "Get User Data", code: 4, userInfo: [NSLocalizedDescriptionKey: "Error response received: \(response)"]))
+                    return
+                } else {
+                    completionHandler(data: nil, error: NSError(domain: "Get User Data", code: 4, userInfo: [NSLocalizedDescriptionKey: "Invalid Response to your request"]))
+                    return
+                }
+                
+            }
+            
+            guard let data = data else {
+                completionHandler(data: nil, error: NSError(domain: "Get User Data", code: 4, userInfo: [NSLocalizedDescriptionKey: "Invalid data received"]))
+                return
+            }
+            
+            let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+            UdacityParseClient.parseJSONResponse(newData, completionHandler: completionHandler)
+            
+        }
+        //Start Task
+        task.resume()
+        
+        return task
+    }
+    
+    //Post method for posting student locatio data
+    func postAndPutStudentLocationDataTask(method: String, httpMethod: String, jsonBody: [String: AnyObject], completionHandler: (data: AnyObject?, error: NSError?) -> Void) -> NSURLSessionDataTask  {
+        
+        //Create URL
+        let url = "https://api.parse.com/1/classes/StudentLocation" + method
+        let requestURL = NSURL(string: url)
+        
+        //Create Request
+        let request = NSMutableURLRequest(URL: requestURL!)
+        request.HTTPMethod = httpMethod
+        request.addValue("QrX47CA9cyuGewLdsL7o5Eb8iug6Em8ye0dnAbIr", forHTTPHeaderField: "X-Parse-Application-Id")
+        request.addValue("QuWThTdiRmTux3YaDseUSEpUKo7aBYM737yKd4gY", forHTTPHeaderField: "X-Parse-REST-API-Key")
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        do {
+            request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(jsonBody, options: .PrettyPrinted)
+        } catch {
+            print("error in converting JsonBody dictionary to json: \(error)")
+            completionHandler(data: nil, error: NSError(domain: "Post Student Data", code: 3, userInfo: [NSLocalizedDescriptionKey: "\(error)"]))
+        }
+        
+        
+        //Create Data Task
+        let task = session.dataTaskWithRequest(request) {data, response, error in
+            //Handle the error
+            if error  != nil {
+                completionHandler(data: nil, error: error)
+                return
+            }
+            
+            //Handle the response
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                if let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode == 400 {
+                    completionHandler(data: nil, error: NSError(domain: "Post Student Data", code: 3, userInfo: [NSLocalizedDescriptionKey: "Incorrectly formatted request"]))
+                    return
+                } else if let response = response {
+                    completionHandler(data: nil, error: NSError(domain: "Post Student Data", code: 3, userInfo: [NSLocalizedDescriptionKey: "Error response:\(response)"]))
+                    return
+                } else {
+                    completionHandler(data: nil, error: NSError(domain: "Post Student Data", code: 3, userInfo: [NSLocalizedDescriptionKey: "Invalid Response"]))
+                    return
+                }
+            }
+            
+            guard let data = data else {
+                completionHandler(data: nil, error: NSError(domain: "Post Student Data", code: 3, userInfo: [NSLocalizedDescriptionKey: "Invalid Data Received"]))
+                return
+            }
+            
+            UdacityParseClient.parseJSONResponse(data, completionHandler: completionHandler)
+        }
+        //Start Task
+        task.resume()
+        
+        return task
+    }
+    
     class func parseJSONResponse(data: NSData, completionHandler:(results: AnyObject!, error: NSError?) -> Void) {
         
         var parsedData: AnyObject!
         
         do {
-            let newData = NSString(data: data, encoding: NSUTF8StringEncoding)
-            print("here is parsed Data just before parsing: \(newData)")
             parsedData = try NSJSONSerialization.JSONObjectWithData(data, options: .AllowFragments)
-            print("here is parsed Data: \(parsedData)")
-            
         } catch {
-            print("Why is there an error: \(error)")
             let userInfo = [NSLocalizedDescriptionKey: "Unable to get data from JSON: \(data)"]
             completionHandler(results: nil, error: NSError(domain: "parseJSONResponse", code: 1, userInfo: userInfo))
         }
@@ -157,8 +269,10 @@ class UdacityParseClient: NSObject {
         return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }
     
-    class func alertUser(hostViewController: UIViewController , title: String, message: String) {
+    class func alertUser(hostViewController: UIViewController , title: String, message: String, dismissButton: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
+        let action = UIAlertAction(title: dismissButton, style: .Cancel, handler: nil)
+        alert.addAction(action)
         dispatch_async(dispatch_get_main_queue()) {
             hostViewController.presentViewController(alert, animated: true, completion: nil)
         }
@@ -166,10 +280,10 @@ class UdacityParseClient: NSObject {
     
     class func sharedInstance() -> UdacityParseClient {
         
-        struct Slingleton {
+        struct Singleton {
             
             static var sharedInstance = UdacityParseClient()
         }
-        return Slingleton.sharedInstance
+        return Singleton.sharedInstance
     }
 }

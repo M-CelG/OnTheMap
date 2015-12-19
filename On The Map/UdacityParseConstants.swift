@@ -63,5 +63,10 @@ extension UdacityParseClient {
         static let id = "id"
         static let key = "key"
         static let results = "results"
+        static let user = "user"
+        static let firstName = "first_name"
+        static let lastName = "last_name"
     }
+    
+    
 }

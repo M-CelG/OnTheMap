@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import MapKit
 
-class mapViewController: UIViewController, MKMapViewDelegate {
+class MapViewController: UIViewController, MKMapViewDelegate {
     
     
     @IBOutlet weak var mapView: MKMapView!
@@ -24,15 +24,9 @@ class mapViewController: UIViewController, MKMapViewDelegate {
         
         mapView.delegate = self
         
-        self.parentViewController?.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Logout", style: .Plain, target: self, action: "logoutButtonAction")
-        let pinBarButton = UIBarButtonItem(image: UIImage(named: "pin"), style: .Plain, target: self, action: "postUserLocation")
-        let refreshBarButton = UIBarButtonItem(barButtonSystemItem: .Refresh, target: self, action: "updateStudentData")
-        
-        self.parentViewController?.navigationItem.rightBarButtonItems = [refreshBarButton, pinBarButton]
-        
         //Load Student Data
-        updateStudentData()
-        
+        ShareStudentData.sharedInstance().studentData()
+
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -43,6 +37,8 @@ class mapViewController: UIViewController, MKMapViewDelegate {
   
         super.viewDidAppear(animated)
         
+        students = ShareStudentData.sharedInstance().sharedStudentsData
+        
         //Create array of annotations
         var annotations = [MKPointAnnotation]()
         
@@ -52,43 +48,35 @@ class mapViewController: UIViewController, MKMapViewDelegate {
             
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
-            annotation.title = student.firstName + student.lastName
+            annotation.title = student.firstName + " " + student.lastName
             annotation.subtitle = student.mediaURL
             
             //Append student annotation to the array
             annotations.append(annotation)
             
         }
-        print("Here are annotation:\(annotations)")
         //Add Annotation to the Map
         self.mapView.addAnnotations(annotations)
-        
     }
     
-    func logoutButtonAction() {
+    @IBAction func logoutButton(sender: AnyObject) {
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    func postUserLocation() {
-        print("Method here to post User location")
+    @IBAction func postUserLocation(sender: AnyObject) {
+        let controller = storyboard?.instantiateViewControllerWithIdentifier("InfoPostViewController") as! InfoPostViewController
+        self.navigationController!.presentViewController(controller, animated: true, completion: nil)
     }
     
-    func updateStudentData() {
-   
-        UdacityParseClient.sharedInstance().getStudentData(100) {data, success, error in
-            if success {
-                print("Got Student Data")
-                if let data = data {
-                    self.students = data
-                } else {
-                    print("No data from get student data task")
-                }
-            } else {
-                print("Unable to retrive Student Data:\(error)")
-            }
-        }
+    @IBAction func refreshData(sender: AnyObject) {
+        ShareStudentData.sharedInstance().studentData()
     }
     
+    
+    // Mark: Delegate functions for Map View
+    
+    
+    //Returns reuseable pin
     func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
         
         let reuseId = "pin"
@@ -107,6 +95,7 @@ class mapViewController: UIViewController, MKMapViewDelegate {
         return pinView
     }
     
+    //Responds to when right call accessary is tapped
     func mapView(mapView: MKMapView, annotationView view: MKAnnotationView, calloutAccessoryControlTapped control: UIControl) {
         
         if control == view.rightCalloutAccessoryView {
