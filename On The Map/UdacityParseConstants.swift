@@ -6,6 +6,10 @@
 //  Copyright © 2015 CelG Mobile LLC. All rights reserved.
 //
 
+/*
+// Various constants that are utilized multiple times in the application
+*/
+
 import Foundation
 
 extension UdacityParseClient {
@@ -66,6 +70,14 @@ extension UdacityParseClient {
         static let user = "user"
         static let firstName = "first_name"
         static let lastName = "last_name"
+    }
+    
+    struct HttpBody {
+        static let Facebook = "facebook_mobile"
+        static let AccessToken = "access_token"
+        static let UserName = "username"
+        static let Password = "password"
+        static let Udacity = "udacity"
     }
     
     

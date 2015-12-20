@@ -6,21 +6,25 @@
 //  Copyright © 2015 CelG Mobile LLC. All rights reserved.
 //
 
+// This view controller manages login into the application
+
 import UIKit
+import FBSDKLoginKit
 
 
-class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDelegate, FBSDKLoginButtonDelegate {
 
     //Outlets from the view
     @IBOutlet weak var passwdTextField: UITextField!
     @IBOutlet weak var emailTextField: UITextField!
-    
     @IBOutlet weak var loginButton: SpecialButton!
-    @IBOutlet weak var loginFacebook: SpecialButton!
+    @IBOutlet weak var loginFacebook: FBSDKLoginButton!
     @IBOutlet weak var contentView: UIView!
-        
     @IBOutlet weak var scrollView: UIScrollView!
     var session: NSURLSession!
+    /*This var is used to tag active text field so to adjust scroll view 
+    // whenever keyboard is shown or hides
+    */
     var activeField: UITextField?
     
     override func viewDidLoad() {
@@ -30,9 +34,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         //Get Session
         session = NSURLSession.sharedSession()
         self.configureUI()
-        passwdTextField.secureTextEntry = true
+        
+        //Delegate for facebook login button
+        loginFacebook.delegate = self
+        
+        //Delegate for textfields
         passwdTextField.delegate = self
         emailTextField.delegate = self
+        
         scrollView.keyboardDismissMode = .OnDrag
         
         //Subscribe to keyboard notification
@@ -42,21 +51,22 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewDidAppear(animated)
         //Un-subscribe to keyboard notifications
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardDidShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
     }
     
-    
+    //Login directly to Udacity using username and password
     @IBAction func loginUser(sender: AnyObject) {
         var username = ""
         var password = ""
         
-        
+        //Check if internet connection is available
         if !Reachability.isConnectedToNetwork() {
             alertUser("Internet Connection", message: "Please check Internet Connection", dismissButton: "Retry")
         } else {
-        
+            //Make sure username and password textfields are not empty
             if let text = emailTextField.text {
                 if text.isEmpty {
                     UdacityParseClient.alertUser(self, title: "Login Error", message: "Please enter email address", dismissButton: "Retry")
@@ -77,7 +87,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
             //Call login convience function with the credentials passed by user
             UdacityParseClient.sharedInstance().loginToUdacityDirectly(username, password: password) {success, error in
                 if error != nil  {
-                    print("Error during login:\(error)")
                     if let dictionary = error?.userInfo {
                         if (dictionary[NSLocalizedDescriptionKey])! as! String == "Invalid Email and/or Password" {
                             UdacityParseClient.alertUser(self, title: "Login Error", message: "Invalide Email and/or Password", dismissButton: "Retry")
@@ -89,7 +98,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
                     }
                 } else {
                     if success {
-                        print("Successful in login")
                         dispatch_async(dispatch_get_main_queue()) {
                             self.emailTextField.text = ""
                             self.passwdTextField.text = ""
@@ -108,6 +116,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         UIApplication.sharedApplication().openURL(NSURL(string: url)!)
     }
 
+    // This func presents the tab view once login is successful
     func presentMapView() {
         dispatch_async(dispatch_get_main_queue()) {
             let controller = self.storyboard!.instantiateViewControllerWithIdentifier("tabViewController") as! UITabBarController
@@ -118,12 +127,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
     //Mark: Configure Login and Facebook Login Buttons
     func configureUI() -> Void {
         
-        //Configure Facebook Login Button
-        loginFacebook.titleLabel?.font = UIFont(name:"AvenirNext-Medium", size: 17.0)
-        loginFacebook.backgroundColor = UIColor(red: 0.00, green: 0.501, blue: 0.839, alpha: 1.0)
-        loginFacebook.highlightedBackingColor = UIColor(red: 0.00, green: 0.298, blue: 0.686, alpha: 1.0)
-        loginFacebook.backingColor = UIColor(red: 0.00, green: 0.501, blue: 0.839, alpha: 1.0)
-        loginFacebook.setTitleColor(UIColor.whiteColor(), forState: .Normal)
+        passwdTextField.secureTextEntry = true
         
         //Configure Udacity Login Button
         loginButton.titleLabel?.font = UIFont(name:"AvenirNext-Medium", size: 17.0)
@@ -157,6 +161,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         activeField = nil
     }
     
+    //Scroll Textifields into view when user is entering text
     func keyboardWasShown (notification: NSNotification) {
         let userInfo = notification.userInfo
         let keyboardSize = userInfo![UIKeyboardFrameBeginUserInfoKey] as! NSValue
@@ -166,6 +171,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
         
+        //Code to specifically adjust textfields into view
         var aRect = self.view.frame
         aRect.size.height -= height
         
@@ -173,11 +179,38 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
             scrollView.scrollRectToVisible(activeField!.frame, animated: true)
         }
     }
-    
+    //Ajust scroll view when keyboard will hide
     func keyboardWillHide (notification: NSNotification) {
         let contentInsets = UIEdgeInsetsZero
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
+    }
+    
+    //Delegate functions for Facebook Button Delegate 
+    func loginButton(loginButton: FBSDKLoginButton!, didCompleteWithResult result: FBSDKLoginManagerLoginResult!, error: NSError!) {
+        
+        if error != nil {
+            UdacityParseClient.alertUser(self, title: "Facebook Login", message: error.localizedDescription, dismissButton: "ok")
+            return
+        } else {
+            if let accessToken = result.token.tokenString  {
+                
+                UdacityParseClient.sharedInstance().loginToUdacityViaFacebook(accessToken) {success, error in
+                    if error != nil {
+                        UdacityParseClient.alertUser(self, title: "Facebook Login", message: (error?.localizedDescription)!, dismissButton: "ok")
+                        return
+                    }
+                    
+                    if success {
+                        self.presentMapView()
+                    }
+                }
+            }
+        }
+    }
+    //Additional clean if needed after login out
+    func loginButtonDidLogOut(loginButton: FBSDKLoginButton!) {
+        
     }
 }
 

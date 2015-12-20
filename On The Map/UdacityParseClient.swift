@@ -37,7 +37,6 @@ class UdacityParseClient: NSObject {
         //Create URL from paramters passed to get Task
         let url = UdacityParseClient.Constants.BaseParseURL + method + UdacityParseClient.urlPartFromParameters(parameters)
         let requestURL = NSURL(string: url)
-        print(url)
         
         let request = NSMutableURLRequest(URL: requestURL!)
         request.addValue(UdacityParseClient.Constants.ParseAppID, forHTTPHeaderField: "X-Parse-Application-Id")
@@ -47,25 +46,24 @@ class UdacityParseClient: NSObject {
             
             //Check if there is an error
             if error != nil {
-                print("Error getting data during get request response: \(error)")
                 completionHandler(results: nil, error: error)
             }
             
             //Check for unsuccessful response error
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                 if let response = response as? NSHTTPURLResponse {
-                    print("Here is the error response code:\(response.statusCode)")
+                    completionHandler(results: nil, error: NSError(domain: "Get Student Location Data", code: 2, userInfo: [NSLocalizedDescriptionKey:"Here is the error response code:\(response.statusCode)"]))
                 } else if let response = response {
-                    print("Here is error response:\(response)")
+                    completionHandler(results: nil, error: NSError(domain: "Get Student Location Data", code: 2, userInfo: [NSLocalizedDescriptionKey: "Here is error response:\(response)"]))
                 } else {
-                    print("Your request received invalid response")
+                    completionHandler(results: nil, error: NSError(domain: "Get Student Location Data", code: 2, userInfo: [NSLocalizedDescriptionKey: "Your request received invalid response"]))
                 }
                 return
             }
             
             //Check if data is received
             guard let data = data else {
-                print("No data returned for the request")
+                completionHandler(results: nil, error: NSError(domain: "No Valid Data Received", code: 2, userInfo: [NSLocalizedDescriptionKey: "No data returned for the request"]))
                 return
             }
             
@@ -107,7 +105,7 @@ class UdacityParseClient: NSObject {
             
             guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
                 if let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode == 403 {
-                    let userInfo = [NSLocalizedDescriptionKey: "Invalid Email and/or Password"]
+                    let userInfo = [NSLocalizedDescriptionKey: "Invalid Email and/or Password or Facebook a/c not connected"]
                     completionHandler(results: nil, error: NSError(domain: "Login", code: 0, userInfo: userInfo))
                 } else if let response = response {
                     let userInfo = [NSLocalizedDescriptionKey: "Login Failed - Response StatusCode -\((response as! NSHTTPURLResponse).statusCode)"]
@@ -118,8 +116,6 @@ class UdacityParseClient: NSObject {
                 }
                 return
             }
-            
-            print("Here is response code: \((response as? NSHTTPURLResponse)?.statusCode)")
             
             guard let data = data else {
                 print("No data returned by request")
@@ -142,7 +138,6 @@ class UdacityParseClient: NSObject {
         //Create URL
         let url = UdacityParseClient.Constants.BaseUdacityURl + UdacityParseClient.Methods.UdacityUsers + userID
         let requestURL = NSURL(string: url)
-        print(url)
         
         //Create Request
         let request = NSMutableURLRequest(URL: requestURL!)
@@ -150,7 +145,6 @@ class UdacityParseClient: NSObject {
         //Create task
         let task = session.dataTaskWithRequest(request) {data, response, error in
             if error != nil {
-                print("Error Encountered during the user public task")
                 completionHandler(data: nil, error: error)
                 return
             }
@@ -200,7 +194,6 @@ class UdacityParseClient: NSObject {
         do {
             request.HTTPBody = try NSJSONSerialization.dataWithJSONObject(jsonBody, options: .PrettyPrinted)
         } catch {
-            print("error in converting JsonBody dictionary to json: \(error)")
             completionHandler(data: nil, error: NSError(domain: "Post Student Data", code: 3, userInfo: [NSLocalizedDescriptionKey: "\(error)"]))
         }
         
@@ -231,7 +224,7 @@ class UdacityParseClient: NSObject {
                 completionHandler(data: nil, error: NSError(domain: "Post Student Data", code: 3, userInfo: [NSLocalizedDescriptionKey: "Invalid Data Received"]))
                 return
             }
-            
+            //Parse the json response
             UdacityParseClient.parseJSONResponse(data, completionHandler: completionHandler)
         }
         //Start Task
@@ -240,6 +233,55 @@ class UdacityParseClient: NSObject {
         return task
     }
     
+    func sessionDeleteDataTask(completionHandler: (results: AnyObject?, error: NSError?) ->Void) -> NSURLSessionDataTask {
+        
+        let method = UdacityParseClient.Methods.UdacitySession
+        let url = UdacityParseClient.Constants.BaseUdacityURl + method
+        
+        let requestURL = NSURL(string: url)
+        
+        let request = NSMutableURLRequest(URL: requestURL!)
+        request.HTTPMethod = "DELETE"
+        
+        var xsrfCookie: NSHTTPCookie? = nil
+        
+        let sharedCookieStorage = NSHTTPCookieStorage.sharedHTTPCookieStorage()
+        
+        for cookie in sharedCookieStorage.cookies! as [NSHTTPCookie] {
+            if cookie.name == "XSRF-TOKEN" {xsrfCookie = cookie}
+        }
+        
+        if let xsrfCookie = xsrfCookie {
+            request.setValue(xsrfCookie.value, forHTTPHeaderField: "X-XSRF-TOKEN")
+        }
+        
+        let task = session.dataTaskWithRequest(request) {data, response, error in
+            if error != nil {
+                completionHandler(results: nil, error: error)
+                return
+            }
+            
+            guard let statusCode = (response as? NSHTTPURLResponse)?.statusCode where statusCode >= 200 && statusCode <= 299 else {
+                completionHandler(results: nil, error: NSError(domain: "Delete Session- Logout", code: 8, userInfo: [NSLocalizedDescriptionKey: "Error response: \((response as! NSHTTPURLResponse).statusCode)"]))
+                return
+            }
+            
+            guard let data = data else {
+                completionHandler(results: nil, error: NSError(domain: "Delete Session-Logout", code: 8, userInfo: [NSLocalizedDescriptionKey: "Invalid data received during logout process"]))
+                return
+            }
+            //Remove first 5 bytes from json response from Udacity
+           let newData = data.subdataWithRange(NSMakeRange(5, data.length - 5))
+           //Parse the Json response
+           UdacityParseClient.parseJSONResponse(newData, completionHandler: completionHandler)
+            
+        }
+        task.resume()
+        
+        return task
+    }
+    
+    // Function to convert json data to NSData
     class func parseJSONResponse(data: NSData, completionHandler:(results: AnyObject!, error: NSError?) -> Void) {
         
         var parsedData: AnyObject!
@@ -255,6 +297,7 @@ class UdacityParseClient: NSObject {
         
     }
     
+    //Function to convert dictionary to escaped format for URL attributes
     class func urlPartFromParameters(parameters: [String: AnyObject]) -> String {
         var urlVars = [String]()
         
@@ -269,6 +312,7 @@ class UdacityParseClient: NSObject {
         return (!urlVars.isEmpty ? "?" : "") + urlVars.joinWithSeparator("&")
     }
     
+    // Common function to alert users when an error is received
     class func alertUser(hostViewController: UIViewController , title: String, message: String, dismissButton: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: UIAlertControllerStyle.Alert)
         let action = UIAlertAction(title: dismissButton, style: .Cancel, handler: nil)

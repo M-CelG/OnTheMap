@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import FBSDKLoginKit
+import FBSDKCoreKit
 
 class TableViewController: UIViewController {
     
@@ -28,17 +30,31 @@ class TableViewController: UIViewController {
     }
     
     override func viewDidAppear(animated: Bool) {
-        self.tableView.reloadData()
+        super.viewDidAppear(animated)
+        tableView.reloadData()
     }
     
     //Logout Button Function
     @IBAction func logout(sender: AnyObject) {
+        //Delete session ID at Udacity
+        UdacityParseClient.sharedInstance().deleteSession() {success, error in
+            if error != nil {
+                print("Error during logout:\(error?.localizedDescription)")
+            }
+        }
+        //Check if user login via facebook
+        if FBSDKAccessToken.currentAccessToken() != nil {
+            let logoutTask = FBSDKLoginManager()
+            logoutTask.logOut()
+        }
+
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     //Refresh Button Function
     @IBAction func refreshData(sender: AnyObject) {
         ShareStudentData.sharedInstance().studentData()
+        tableView.reloadData()
 
     }
     
@@ -65,8 +81,8 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
      
         return cell
     }
-    
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    //Open the media URL when user click on a table row
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let url = students[indexPath.row].mediaURL
         UIApplication.sharedApplication().openURL(NSURL(string: url)!)
     }

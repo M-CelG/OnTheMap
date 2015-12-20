@@ -6,6 +6,11 @@
 //  Copyright © 2015 CelG Mobile LLC. All rights reserved.
 //
 
+/* Struct to define the data structure of Udacity Student
+// All student information received via json is stored in
+// student data structure
+*/
+
 import Foundation
 
 struct UdacityStudent {

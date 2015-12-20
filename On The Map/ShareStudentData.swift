@@ -6,6 +6,8 @@
 //  Copyright © 2015 CelG Mobile LLC. All rights reserved.
 //
 
+/* Mark: This is a singleton class to fetch and store latest student location data*/
+
 import Foundation
 import UIKit
 
@@ -18,7 +20,6 @@ class ShareStudentData {
     func studentData() {
         UdacityParseClient.sharedInstance().getStudentData(100) {data, success, error in
             if success {
-                print("Got Student Data")
                 if let data = data {
                     self.sharedStudentsData = data
                 } else {
@@ -29,10 +30,6 @@ class ShareStudentData {
             }
         }
     }            
-    
-    func postStudentData(){
-        
-    }
     
     class func sharedInstance() -> ShareStudentData {
         

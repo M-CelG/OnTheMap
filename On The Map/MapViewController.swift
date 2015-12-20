@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import MapKit
+import FBSDKLoginKit
 
 class MapViewController: UIViewController, MKMapViewDelegate {
     
@@ -19,9 +20,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     var students = [UdacityStudent]()
     
     override func viewDidLoad() {
-        
         super.viewDidLoad()
-        
+        //Assign Map View Delegate to self
         mapView.delegate = self
         
         //Load Student Data
@@ -34,9 +34,9 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     override func viewDidAppear(animated: Bool) {
-  
         super.viewDidAppear(animated)
         
+        //Update student data
         students = ShareStudentData.sharedInstance().sharedStudentsData
         
         //Create array of annotations
@@ -60,6 +60,18 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func logoutButton(sender: AnyObject) {
+        
+        UdacityParseClient.sharedInstance().deleteSession() {success, error in
+            if error != nil {
+                print("Error during logout:\(error?.localizedDescription)")
+            }
+        }
+        //Check if user logged in via FB
+        if FBSDKAccessToken.currentAccessToken() != nil {
+            let logoutTask = FBSDKLoginManager()
+            logoutTask.logOut()
+        }
+
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     

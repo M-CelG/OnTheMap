@@ -65,7 +65,7 @@
                                                     <action selector="signUpUser:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ae6-mU-mC2"/>
                                                 </connections>
                                             </button>
-                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V9M-KV-M57" customClass="SpecialButton" customModule="On_The_Map" customModuleProvider="target">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V9M-KV-M57" customClass="FBSDKLoginButton">
                                                 <rect key="frame" x="160" y="509" width="280" height="44"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="V9M-KV-M57" secondAttribute="height" multiplier="70:11" id="8Eu-nV-bfP"/>
@@ -142,43 +142,10 @@
             </objects>
             <point key="canvasLocation" x="-3329" y="-947"/>
         </scene>
-        <!--Web View Controller-->
-        <scene sceneID="v8M-Gd-Mea">
-            <objects>
-                <viewController storyboardIdentifier="WebViewController" id="Liw-aK-TTc" customClass="WebViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="6X1-aQ-zGv"/>
-                        <viewControllerLayoutGuide type="bottom" id="1EM-Ko-u29"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="Z2m-Sv-dFO">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <webView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iUb-Bf-N96">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="deviceRGB"/>
-                            </webView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="iUb-Bf-N96" secondAttribute="trailing" constant="-20" id="0wM-ub-TCj"/>
-                            <constraint firstItem="1EM-Ko-u29" firstAttribute="top" secondItem="iUb-Bf-N96" secondAttribute="bottom" id="7j2-6g-6Up"/>
-                            <constraint firstItem="iUb-Bf-N96" firstAttribute="leading" secondItem="Z2m-Sv-dFO" secondAttribute="leadingMargin" constant="-20" id="TMN-xL-BsT"/>
-                            <constraint firstItem="iUb-Bf-N96" firstAttribute="top" secondItem="Z2m-Sv-dFO" secondAttribute="topMargin" id="zwa-BR-Gls"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="webView" destination="iUb-Bf-N96" id="vrg-gB-McW"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="xGv-Zg-gvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-3366" y="-225"/>
-        </scene>
         <!--Table View-->
         <scene sceneID="ckU-je-0Ub">
             <objects>
-                <viewController storyboardIdentifier="TableViewController" title="Table View" id="D1p-rX-wfb" customClass="TableViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TableViewController" title="Table View" automaticallyAdjustsScrollViewInsets="NO" id="D1p-rX-wfb" customClass="TableViewController" customModule="On_The_Map" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Kdp-fB-vpi"/>
                         <viewControllerLayoutGuide type="bottom" id="mUl-Pw-QRi"/>
@@ -192,7 +159,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="reuseCell" textLabel="Wgq-C4-byi" imageView="9FN-8L-UOm" style="IBUITableViewCellStyleDefault" id="B11-cF-D9l">
-                                        <rect key="frame" x="0.0" y="92" width="600" height="44"/>
+                                        <rect key="frame" x="0.0" y="28" width="600" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="B11-cF-D9l" id="h3v-Hu-xLn">
                                             <rect key="frame" x="0.0" y="0.0" width="600" height="43.5"/>
