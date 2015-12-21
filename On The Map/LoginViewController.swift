@@ -9,6 +9,7 @@
 // This view controller manages login into the application
 
 import UIKit
+import FBSDKCoreKit
 import FBSDKLoginKit
 
 

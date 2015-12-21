@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BD0628771C1C6B8200D6D376 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0628761C1C6B8200D6D376 /* Reachability.swift */; };
-		BD492B9A1C283D7F00EDAFDC /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD492B991C283D7F00EDAFDC /* FBSDKCoreKit.framework */; };
+		BD492B9A1C283D7F00EDAFDC /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD492B991C283D7F00EDAFDC /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BD492B9C1C283D9B00EDAFDC /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD492B9B1C283D9B00EDAFDC /* FBSDKLoginKit.framework */; };
 		BD543BA01C093D030059280B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543B9F1C093D030059280B /* AppDelegate.swift */; };
 		BD543BA21C093D030059280B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BA11C093D030059280B /* LoginViewController.swift */; };
@@ -500,7 +500,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/manishsharma/documents/FacebookSDK/FacebookSDKs-iOS-20151111";
 				INFOPLIST_FILE = "On The Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "celgmobile.com.On-The-Map";
@@ -516,7 +515,6 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/manishsharma/documents/FacebookSDK/FacebookSDKs-iOS-20151111";
 				INFOPLIST_FILE = "On The Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "celgmobile.com.On-The-Map";
