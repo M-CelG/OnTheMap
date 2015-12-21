@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		BD0628771C1C6B8200D6D376 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0628761C1C6B8200D6D376 /* Reachability.swift */; };
+		BD492B9A1C283D7F00EDAFDC /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD492B991C283D7F00EDAFDC /* FBSDKCoreKit.framework */; };
+		BD492B9C1C283D9B00EDAFDC /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD492B9B1C283D9B00EDAFDC /* FBSDKLoginKit.framework */; };
 		BD543BA01C093D030059280B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543B9F1C093D030059280B /* AppDelegate.swift */; };
 		BD543BA21C093D030059280B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BA11C093D030059280B /* LoginViewController.swift */; };
 		BD543BA51C093D030059280B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD543BA31C093D030059280B /* Main.storyboard */; };
@@ -16,8 +18,6 @@
 		BD543BB51C093D030059280B /* On_The_MapTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BB41C093D030059280B /* On_The_MapTests.swift */; };
 		BD543BC01C093D030059280B /* On_The_MapUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BBF1C093D030059280B /* On_The_MapUITests.swift */; };
 		BD6524161C190EA20086E82F /* ShareStudentData.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD6524151C190EA20086E82F /* ShareStudentData.swift */; };
-		BDB5338C1C25BDF500D0F80B /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5338B1C25BDF500D0F80B /* FBSDKCoreKit.framework */; };
-		BDB5338F1C25D37A00D0F80B /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BDB5338E1C25D37A00D0F80B /* FBSDKLoginKit.framework */; };
 		BDE715631C09EE06003BDE12 /* UdacityParseClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE715621C09EE06003BDE12 /* UdacityParseClient.swift */; };
 		BDE715651C09EF0C003BDE12 /* UdacityStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE715641C09EF0C003BDE12 /* UdacityStudent.swift */; };
 		BDE715671C09F075003BDE12 /* UdacityParseConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDE715661C09F075003BDE12 /* UdacityParseConstants.swift */; };
@@ -47,6 +47,8 @@
 
 /* Begin PBXFileReference section */
 		BD0628761C1C6B8200D6D376 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
+		BD492B991C283D7F00EDAFDC /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
+		BD492B9B1C283D9B00EDAFDC /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
 		BD543B9C1C093D030059280B /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD543B9F1C093D030059280B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD543BA11C093D030059280B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -61,9 +63,6 @@
 		BD543BBF1C093D030059280B /* On_The_MapUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = On_The_MapUITests.swift; sourceTree = "<group>"; };
 		BD543BC11C093D030059280B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		BD6524151C190EA20086E82F /* ShareStudentData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShareStudentData.swift; sourceTree = "<group>"; };
-		BDB5338B1C25BDF500D0F80B /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKCoreKit.framework; path = "../../../Documents/FacebookSDK/FacebookSDKs-iOS-20151111/FBSDKCoreKit.framework"; sourceTree = "<group>"; };
-		BDB5338D1C25C55A00D0F80B /* Bridge-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridge-Header.h"; sourceTree = "<group>"; };
-		BDB5338E1C25D37A00D0F80B /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKLoginKit.framework; path = "../../../Documents/FacebookSDK/FacebookSDKs-iOS-20151111/FBSDKLoginKit.framework"; sourceTree = "<group>"; };
 		BDE715621C09EE06003BDE12 /* UdacityParseClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityParseClient.swift; sourceTree = "<group>"; };
 		BDE715641C09EF0C003BDE12 /* UdacityStudent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityStudent.swift; sourceTree = "<group>"; };
 		BDE715661C09F075003BDE12 /* UdacityParseConstants.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UdacityParseConstants.swift; sourceTree = "<group>"; };
@@ -79,8 +78,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BDB5338F1C25D37A00D0F80B /* FBSDKLoginKit.framework in Frameworks */,
-				BDB5338C1C25BDF500D0F80B /* FBSDKCoreKit.framework in Frameworks */,
+				BD492B9A1C283D7F00EDAFDC /* FBSDKCoreKit.framework in Frameworks */,
+				BD492B9C1C283D9B00EDAFDC /* FBSDKLoginKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -104,7 +103,6 @@
 		BD0628751C1C6B4300D6D376 /* Supporting */ = {
 			isa = PBXGroup;
 			children = (
-				BDB5338D1C25C55A00D0F80B /* Bridge-Header.h */,
 				BD543BAB1C093D030059280B /* Info.plist */,
 				BD543BA61C093D030059280B /* Assets.xcassets */,
 				BD543B9F1C093D030059280B /* AppDelegate.swift */,
@@ -116,7 +114,6 @@
 		BD543B931C093D030059280B = {
 			isa = PBXGroup;
 			children = (
-				BD674CA31C25BAE500E2252B /* Frameworks */,
 				BD543B9E1C093D030059280B /* On The Map */,
 				BD543BB31C093D030059280B /* On The MapTests */,
 				BD543BBE1C093D030059280B /* On The MapUITests */,
@@ -137,6 +134,7 @@
 		BD543B9E1C093D030059280B /* On The Map */ = {
 			isa = PBXGroup;
 			children = (
+				BD674CA31C25BAE500E2252B /* Frameworks */,
 				BD0628751C1C6B4300D6D376 /* Supporting */,
 				BDE715721C14ACD9003BDE12 /* View */,
 				BD543BCE1C093D750059280B /* Controllers */,
@@ -188,10 +186,11 @@
 		BD674CA31C25BAE500E2252B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				BDB5338E1C25D37A00D0F80B /* FBSDKLoginKit.framework */,
-				BDB5338B1C25BDF500D0F80B /* FBSDKCoreKit.framework */,
+				BD492B9B1C283D9B00EDAFDC /* FBSDKLoginKit.framework */,
+				BD492B991C283D7F00EDAFDC /* FBSDKCoreKit.framework */,
 			);
 			name = Frameworks;
+			path = ..;
 			sourceTree = "<group>";
 		};
 		BDE715611C09ED79003BDE12 /* Client */ = {
@@ -497,12 +496,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/manishsharma/documents/FacebookSDK/FacebookSDKs-iOS-20151111";
 				INFOPLIST_FILE = "On The Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "celgmobile.com.On-The-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "On The Map/Bridge-Header.h";
 			};
 			name = Debug;
 		};
@@ -510,12 +512,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "/Users/manishsharma/documents/FacebookSDK/FacebookSDKs-iOS-20151111";
 				INFOPLIST_FILE = "On The Map/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "celgmobile.com.On-The-Map";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				"SWIFT_OBJC_BRIDGING_HEADER[arch=*]" = "On The Map/Bridge-Header.h";
 			};
 			name = Release;
 		};

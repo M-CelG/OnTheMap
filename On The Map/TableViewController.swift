@@ -26,7 +26,6 @@ class TableViewController: UIViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
         self.students = ShareStudentData.sharedInstance().sharedStudentsData
-        print("TableView first student: \(students[0])")
     }
     
     override func viewDidAppear(animated: Bool) {

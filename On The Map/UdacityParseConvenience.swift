@@ -28,9 +28,9 @@ extension UdacityParseClient {
                 print("Loging Failed with Udacity:\(error)")
                 completionHandler(success: false, error: error)
             } else {
+                //Get the User account information from the data
                 if let returnAccount = results[UdacityParseClient.jsonResponse.account] as? [String: AnyObject] {
                     if let key = returnAccount[UdacityParseClient.jsonResponse.key] as? String {
-                        print("Here is the key from account information:\(key)")
                         self.userID = key
                     } else {
                         let userInfo = "Login failed as response does not include Key"
@@ -40,10 +40,9 @@ extension UdacityParseClient {
                     let userInfo = "Login failed as response does not include Key"
                     completionHandler(success: false, error: NSError(domain: "loginToUdacityDirectly", code: 2, userInfo: [NSLocalizedDescriptionKey: userInfo]))
                 }
-                
+                //Get the session information from data
                 if let returnSession = results[UdacityParseClient.jsonResponse.session] as? [String: AnyObject] {
                     if let sessionInfo = returnSession[UdacityParseClient.jsonResponse.id] as? String {
-                        print("Here is session ID: \(sessionInfo)")
                         self.sessionID = sessionInfo
                         completionHandler(success: true, error: nil)
                     } else {
@@ -73,13 +72,12 @@ extension UdacityParseClient {
         
         udacityLoginDataTask(method, jsonBody: httpBody) {results, error in
             if error != nil {
-                print("returned error during facebook login: \(error?.localizedDescription)")
                 completionHandler(success: false, error: error)
                 return
             } else {
+                //Get the User account ID
                 if let returnAccount = results[UdacityParseClient.jsonResponse.account] as? [String: AnyObject] {
                     if let key = returnAccount[UdacityParseClient.jsonResponse.key] as? String {
-                        print("Here is the key from account information:\(key)")
                         self.userID = key
                     } else {
                         let userInfo = "Login failed as response does not include Key"
@@ -89,10 +87,9 @@ extension UdacityParseClient {
                     let userInfo = "Login failed as response does not include Key"
                     completionHandler(success: false, error: NSError(domain: "loginToUdacityDirectly", code: 2, userInfo: [NSLocalizedDescriptionKey: userInfo]))
                 }
-                
+                //Get the session ID for the user
                 if let returnSession = results[UdacityParseClient.jsonResponse.session] as? [String: AnyObject] {
                     if let sessionInfo = returnSession[UdacityParseClient.jsonResponse.id] as? String {
-                        print("Here is session ID: \(sessionInfo)")
                         self.sessionID = sessionInfo
                         completionHandler(success: true, error: nil)
                     } else {
