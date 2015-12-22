@@ -30,21 +30,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        loadData()
-        mapView.reloadInputViews()
+        loadAnnontations()
+//        loadData()
+//        mapView.reloadInputViews()
     }
 
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        //load student data
-        students = ShareStudentData.sharedInstance().sharedStudentsData
-        
-        //Remove old Annotation
-        mapView.removeAnnotations(annotations)
-
-        //Annotated Map View
-        loadAnnontations()
+        refreshData(self)
     }
     
     @IBAction func logoutButton(sender: AnyObject) {
@@ -58,9 +52,12 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func refreshData(sender: AnyObject) {
+        
         loadData()
+        
+        let annotationsToRemove = mapView.annotations
         //Remove old Annotations, if any
-        mapView.removeAnnotations(annotations)
+        mapView.removeAnnotations(annotationsToRemove)
         //Load new Annotations
         loadAnnontations()
     }
@@ -69,9 +66,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         //Fetch Data from the server
         ShareStudentData.sharedInstance().studentData(){error in
             if error != nil {
-                dispatch_async(dispatch_get_main_queue()){
-                    UdacityParseClient.alertUser(self, title: "Error Getting Data", message: "Student Data Unable", dismissButton: "ok")
-                }
+                UdacityParseClient.alertUser(self, title: "Error Getting Data", message: "Student Data Unable", dismissButton: "ok")
                 return
             }
         }
@@ -80,6 +75,8 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     func loadAnnontations() {
         
+        //clear the annotation array
+        annotations.removeAll()
         //Create Annotation for each student
         for student in students {
             //Create coordinate for student location from student data
