@@ -10,6 +10,7 @@
 		BD0628771C1C6B8200D6D376 /* Reachability.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD0628761C1C6B8200D6D376 /* Reachability.swift */; };
 		BD492B9A1C283D7F00EDAFDC /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD492B991C283D7F00EDAFDC /* FBSDKCoreKit.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		BD492B9C1C283D9B00EDAFDC /* FBSDKLoginKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD492B9B1C283D9B00EDAFDC /* FBSDKLoginKit.framework */; };
+		BD492B9E1C28949200EDAFDC /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD492B9D1C28949200EDAFDC /* TabViewController.swift */; };
 		BD543BA01C093D030059280B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543B9F1C093D030059280B /* AppDelegate.swift */; };
 		BD543BA21C093D030059280B /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD543BA11C093D030059280B /* LoginViewController.swift */; };
 		BD543BA51C093D030059280B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BD543BA31C093D030059280B /* Main.storyboard */; };
@@ -49,6 +50,7 @@
 		BD0628761C1C6B8200D6D376 /* Reachability.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reachability.swift; sourceTree = "<group>"; };
 		BD492B991C283D7F00EDAFDC /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		BD492B9B1C283D9B00EDAFDC /* FBSDKLoginKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKLoginKit.framework; sourceTree = "<group>"; };
+		BD492B9D1C28949200EDAFDC /* TabViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
 		BD543B9C1C093D030059280B /* On The Map.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "On The Map.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BD543B9F1C093D030059280B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BD543BA11C093D030059280B /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 				BDE7156C1C0C930C003BDE12 /* MapViewController.swift */,
 				BDE7156E1C10ACB7003BDE12 /* TableViewController.swift */,
 				BDE715701C1370F6003BDE12 /* InfoPostViewController.swift */,
+				BD492B9D1C28949200EDAFDC /* TabViewController.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -347,6 +350,7 @@
 				BD543BA21C093D030059280B /* LoginViewController.swift in Sources */,
 				BDE715711C1370F6003BDE12 /* InfoPostViewController.swift in Sources */,
 				BDE715651C09EF0C003BDE12 /* UdacityStudent.swift in Sources */,
+				BD492B9E1C28949200EDAFDC /* TabViewController.swift in Sources */,
 				BDE715671C09F075003BDE12 /* UdacityParseConstants.swift in Sources */,
 				BDE715631C09EE06003BDE12 /* UdacityParseClient.swift in Sources */,
 				BDE715741C14AD06003BDE12 /* SpecialButton.swift in Sources */,

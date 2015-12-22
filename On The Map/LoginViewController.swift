@@ -120,7 +120,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
     // This func presents the tab view once login is successful
     func presentMapView() {
         dispatch_async(dispatch_get_main_queue()) {
-            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("tabViewController") as! UITabBarController
+            let controller = self.storyboard!.instantiateViewControllerWithIdentifier("TabViewController") as! TabViewController
             self.presentViewController(controller, animated: true, completion: nil)
         }
     }

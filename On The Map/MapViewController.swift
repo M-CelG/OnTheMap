@@ -19,59 +19,36 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     //Array to store Student Data
     var students = [UdacityStudent]()
     
+    //Create Array Annotations
+    var annotations = [MKPointAnnotation]()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         //Assign Map View Delegate to self
         mapView.delegate = self
-        
-        //Load Student Data
-        ShareStudentData.sharedInstance().studentData()
-
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.mapView.reloadInputViews()
+        super.viewWillAppear(animated)
+        loadData()
+        mapView.reloadInputViews()
     }
+
     
     override func viewDidAppear(animated: Bool) {
         super.viewDidAppear(animated)
-        
-        //Update student data
+        //load student data
         students = ShareStudentData.sharedInstance().sharedStudentsData
         
-        //Create array of annotations
-        var annotations = [MKPointAnnotation]()
-        
-        //Create annotation for each student
-        for student in students {
-            let coordinate = CLLocationCoordinate2D(latitude: student.latitude, longitude: student.longitude)
-            
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinate
-            annotation.title = student.firstName + " " + student.lastName
-            annotation.subtitle = student.mediaURL
-            
-            //Append student annotation to the array
-            annotations.append(annotation)
-            
-        }
-        //Add Annotation to the Map
-        self.mapView.addAnnotations(annotations)
+        //Remove old Annotation
+        mapView.removeAnnotations(annotations)
+
+        //Annotated Map View
+        loadAnnontations()
     }
     
     @IBAction func logoutButton(sender: AnyObject) {
-        
-        UdacityParseClient.sharedInstance().deleteSession() {success, error in
-            if error != nil {
-                print("Error during logout:\(error?.localizedDescription)")
-            }
-        }
-        //Check if user logged in via FB
-        if FBSDKAccessToken.currentAccessToken() != nil {
-            let logoutTask = FBSDKLoginManager()
-            logoutTask.logOut()
-        }
-
+        ShareStudentData.sharedInstance().logout(self)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
@@ -81,7 +58,42 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     }
     
     @IBAction func refreshData(sender: AnyObject) {
-        ShareStudentData.sharedInstance().studentData()
+        loadData()
+        //Remove old Annotations, if any
+        mapView.removeAnnotations(annotations)
+        //Load new Annotations
+        loadAnnontations()
+    }
+    
+    func loadData() {
+        //Fetch Data from the server
+        ShareStudentData.sharedInstance().studentData(){error in
+            if error != nil {
+                dispatch_async(dispatch_get_main_queue()){
+                    UdacityParseClient.alertUser(self, title: "Error Getting Data", message: "Student Data Unable", dismissButton: "ok")
+                }
+                return
+            }
+        }
+        students = ShareStudentData.sharedInstance().sharedStudentsData
+    }
+    
+    func loadAnnontations() {
+        
+        //Create Annotation for each student
+        for student in students {
+            //Create coordinate for student location from student data
+            let coordinate = CLLocationCoordinate2D(latitude: student.latitude, longitude: student.longitude)
+            //Create an annotation for the student
+            let annotation = MKPointAnnotation()
+            annotation.coordinate = coordinate
+            annotation.title = student.firstName + " " + student.lastName
+            annotation.subtitle = student.mediaURL
+            //Append annotation created for individual student to annotation array
+            annotations.append(annotation)
+        }
+        //Add annotation array to the map view
+        mapView.addAnnotations(annotations)
     }
     
     

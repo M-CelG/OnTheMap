@@ -10,6 +10,8 @@
 
 import Foundation
 import UIKit
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 class ShareStudentData {
     
@@ -17,19 +19,37 @@ class ShareStudentData {
     var objectID: String? = nil
     
     
-    func studentData() {
+    func studentData(completionHandler:(error: NSError?) -> Void) {
         UdacityParseClient.sharedInstance().getStudentData(100) {data, success, error in
             if success {
                 if let data = data {
                     self.sharedStudentsData = data
+                    completionHandler(error: nil)
                 } else {
-                    print("No data from get student data task")
+                    completionHandler(error: NSError(domain: "Students Data", code: 3, userInfo: [NSLocalizedDescriptionKey: "Data received is in-valid"]))
+                    return
                 }
             } else {
-                print("Unable to retrive Student Data:\(error)")
+                completionHandler(error: NSError(domain: "Student Data", code: 3, userInfo: [NSLocalizedDescriptionKey: (error?.localizedDescription)!]))
+                return
             }
         }
-    }            
+    }
+    
+    func logout(hostViewController: UIViewController) {
+        //Delete session ID at Udacity
+        UdacityParseClient.sharedInstance().deleteSession() {success, error in
+            if error != nil {
+                UdacityParseClient.alertUser(hostViewController, title: "Logout Session", message: "Unable to delete Udacity Session", dismissButton: "ok")
+                print("Error during logout:\(error?.localizedDescription)")
+            }
+        }
+        //Check if user login via facebook
+        if FBSDKAccessToken.currentAccessToken() != nil {
+            let logoutTask = FBSDKLoginManager()
+            logoutTask.logOut()
+        }
+    }
     
     class func sharedInstance() -> ShareStudentData {
         

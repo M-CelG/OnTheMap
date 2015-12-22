@@ -19,42 +19,27 @@ class TableViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
                 
-        // Do any additional setup after loading the view.
-        ShareStudentData.sharedInstance().studentData()
+        //Load Data for the table
+        students = ShareStudentData.sharedInstance().sharedStudentsData
     }
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(true)
-        self.students = ShareStudentData.sharedInstance().sharedStudentsData
-    }
-    
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
+        loadData()
         tableView.reloadData()
     }
     
+    
     //Logout Button Function
     @IBAction func logout(sender: AnyObject) {
-        //Delete session ID at Udacity
-        UdacityParseClient.sharedInstance().deleteSession() {success, error in
-            if error != nil {
-                print("Error during logout:\(error?.localizedDescription)")
-            }
-        }
-        //Check if user login via facebook
-        if FBSDKAccessToken.currentAccessToken() != nil {
-            let logoutTask = FBSDKLoginManager()
-            logoutTask.logOut()
-        }
-
+        ShareStudentData.sharedInstance().logout(self)
         self.dismissViewControllerAnimated(true, completion: nil)
     }
     
     //Refresh Button Function
     @IBAction func refreshData(sender: AnyObject) {
-        ShareStudentData.sharedInstance().studentData()
+        loadData()
         tableView.reloadData()
-
     }
     
     //Function connected to pin Button
@@ -62,7 +47,15 @@ class TableViewController: UIViewController {
         let controller = self.storyboard?.instantiateViewControllerWithIdentifier("InfoPostViewController") as! InfoPostViewController
         self.navigationController?.presentViewController(controller, animated: true, completion: nil)
     }
-       
+    
+    func loadData() {
+        ShareStudentData.sharedInstance().studentData(){error in
+            if error != nil {
+                UdacityParseClient.alertUser(self, title: "Student Data", message: "Unable to fetch Student Data", dismissButton: "ok")
+            }
+        }
+        students = ShareStudentData.sharedInstance().sharedStudentsData
+    }       
 }
 
 extension TableViewController: UITableViewDelegate, UITableViewDataSource {
@@ -77,6 +70,7 @@ extension TableViewController: UITableViewDelegate, UITableViewDataSource {
         
         let cell = tableView.dequeueReusableCellWithIdentifier("reuseCell", forIndexPath: indexPath) as UITableViewCell
         cell.textLabel!.text = students[indexPath.row].firstName + " " + students[indexPath.row].lastName
+        cell.detailTextLabel?.text = students[indexPath.row].mapString
      
         return cell
     }

@@ -26,6 +26,8 @@ class UdacityParseClient: NSObject {
     var lastName: String? = nil
     //Object ID
     var objectID: String? = nil
+    //Media URL
+    var mediaURLText: String? = nil
     
     override init() {
         session = NSURLSession.sharedSession()

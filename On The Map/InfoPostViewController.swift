@@ -57,12 +57,20 @@ class InfoPostViewController: UIViewController, UITextFieldDelegate, MKMapViewDe
     }
     
     override func viewWillDisappear(animated: Bool) {
+        super.viewWillAppear(animated)
         //Un-subscribe to keyboard notifications
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillHideNotification, object: nil)
         
         //Stop Activity Indicator from Animating
         activityIndicator.stopAnimating()
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        super.viewDidAppear(animated)
+        if UdacityParseClient.sharedInstance().mediaURLText != nil {
+            mediaURLTextField.text = UdacityParseClient.sharedInstance().mediaURLText
+        }
     }
     
     
@@ -79,24 +87,18 @@ class InfoPostViewController: UIViewController, UITextFieldDelegate, MKMapViewDe
     func publicUserData() {
         UdacityParseClient.sharedInstance().getUserPublicData {success, error in
             if error != nil {
-                print("Unable to get User public data")
-            }
-            if success {
-                print(" Here is first name: \(UdacityParseClient.sharedInstance().firstName)")
+                UdacityParseClient.alertUser(self, title: "Your Public Data", message: "Unable to get data from Udacity", dismissButton: "ok")
+
             }
         }
     }
     
     func getPreviousObjectID() {
-        
         if UdacityParseClient.sharedInstance().objectID == nil {
             UdacityParseClient.sharedInstance().getUserStudentData(){success, error in
                 if error != nil {
                     print("Previous Object ID do not exist")
                     return
-                }                
-                if success {
-                    print("Object ID for previous post found")
                 }
             }
         }
@@ -182,17 +184,13 @@ class InfoPostViewController: UIViewController, UITextFieldDelegate, MKMapViewDe
                 //If unable to post alert user
                 if error != nil {
                     print("Unable to post user data: \(error)")
-                    dispatch_async(dispatch_get_main_queue()) {
-                        UdacityParseClient.alertUser(self, title: "Posting Data", message: "Unable to Post Data", dismissButton: "Retry")
-                    }
+                    UdacityParseClient.alertUser(self, title: "Posting Data", message: "Unable to Post Data", dismissButton: "Retry")
                     return
                 }
                 //If posting user location for first time extract Object ID for resuse
                 if let newData = data as? [String: AnyObject] {
                     if let objectID = newData["objectId"] as? String {
                         UdacityParseClient.sharedInstance().objectID = objectID
-                        print("Posted location information with ObjectID:\(objectID)")
-
                         }
                     }
                 dispatch_async(dispatch_get_main_queue()){
