@@ -174,18 +174,19 @@ extension UdacityParseClient {
                 completionHandler(success: false, error: NSError(domain: "Get Student Data", code: 5, userInfo: [NSLocalizedDescriptionKey: "Unable to get results from Student location entry"]))
                 return
             }
-            let studentResult = result[0]
-            guard let resultObjectID = studentResult[UdacityParseClient.StudentKey.ObjectID] as? String else {
-                completionHandler(success: false, error: NSError(domain: "Get Student Data", code: 5, userInfo: [NSLocalizedDescriptionKey: "Unable to get Object ID from Student location entry"]))
-                return
+            for student in result {
+                guard let resultObjectID = student[UdacityParseClient.StudentKey.ObjectID] as? String else {
+                    completionHandler(success: false, error: NSError(domain: "Get Student Data", code: 5, userInfo: [NSLocalizedDescriptionKey: "Unable to get Object ID from Student location entry"]))
+                    return
+                }
+                guard let resultText = student[UdacityParseClient.StudentKey.MediaURL] as? String else {
+                    completionHandler(success: false, error: NSError(domain: "Get Student Data", code: 5, userInfo: [NSLocalizedDescriptionKey: "unable to get existing Media URL test"]))
+                    return
+                }
+                //Set values for object ID and existing media URL text
+                UdacityParseClient.sharedInstance().objectID = resultObjectID
+                UdacityParseClient.sharedInstance().mediaURLText = resultText
             }
-            guard let resultText = studentResult[UdacityParseClient.StudentKey.MediaURL] as? String else {
-                completionHandler(success: false, error: NSError(domain: "Get Student Data", code: 5, userInfo: [NSLocalizedDescriptionKey: "unable to get existing Media URL test"]))
-                return
-            }
-            //Set values for object ID and existing media URL text
-            UdacityParseClient.sharedInstance().objectID = resultObjectID
-            UdacityParseClient.sharedInstance().mediaURLText = resultText
         }
     }
     //Udacity login session delete helper function

@@ -16,8 +16,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
-    //Array to store Student Data
-    var students = [UdacityStudent]()
     
     //Create Array Annotations
     var annotations = [MKPointAnnotation]()
@@ -31,8 +29,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         loadAnnontations()
-//        loadData()
-//        mapView.reloadInputViews()
     }
 
     
@@ -70,7 +66,6 @@ class MapViewController: UIViewController, MKMapViewDelegate {
                 return
             }
         }
-        students = ShareStudentData.sharedInstance().sharedStudentsData
     }
     
     func loadAnnontations() {
@@ -78,7 +73,7 @@ class MapViewController: UIViewController, MKMapViewDelegate {
         //clear the annotation array
         annotations.removeAll()
         //Create Annotation for each student
-        for student in students {
+        for student in ShareStudentData.sharedInstance().sharedStudentsData {
             //Create coordinate for student location from student data
             let coordinate = CLLocationCoordinate2D(latitude: student.latitude, longitude: student.longitude)
             //Create an annotation for the student

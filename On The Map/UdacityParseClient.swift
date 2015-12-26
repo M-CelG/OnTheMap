@@ -121,6 +121,7 @@ class UdacityParseClient: NSObject {
             
             guard let data = data else {
                 print("No data returned by request")
+                completionHandler(results: nil, error: NSError(domain: "Login Failed", code: 0, userInfo: [NSLocalizedDescriptionKey: "In Valid data recieved from Udacity login API"]))
                 return
             }
             // Remove first 5 bytes from Udacity API response as per spec

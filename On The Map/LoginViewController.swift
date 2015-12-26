@@ -65,7 +65,9 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
         
         //Check if internet connection is available
         if !Reachability.isConnectedToNetwork() {
-            alertUser("Internet Connection", message: "Please check Internet Connection", dismissButton: "Retry")
+            dispatch_async(dispatch_get_main_queue()){
+                UdacityParseClient.alertUser(self, title: "Internet Connect", message: "Please check your Internet Connection", dismissButton: "ok")
+            }
         } else {
             //Make sure username and password textfields are not empty
             if let text = emailTextField.text {
@@ -89,8 +91,8 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
             UdacityParseClient.sharedInstance().loginToUdacityDirectly(username, password: password) {success, error in
                 if error != nil  {
                     if let dictionary = error?.userInfo {
-                        if (dictionary[NSLocalizedDescriptionKey])! as! String == "Invalid Email and/or Password" {
-                            UdacityParseClient.alertUser(self, title: "Login Error", message: "Invalide Email and/or Password", dismissButton: "Retry")
+                        if (dictionary[NSLocalizedDescriptionKey])! as! String == "Invalid Email and/or Password or Facebook a/c not connected" {
+                            UdacityParseClient.alertUser(self, title: "Login Error", message: "Invalid Email and/or Password", dismissButton: "Retry")
                             return
                         } else if (dictionary[NSLocalizedDescriptionKey])! as! String == "The request timed out." {
                             UdacityParseClient.alertUser(self, title: "Connection Error", message: "Check Internet Connection", dismissButton: "Retry")
@@ -139,13 +141,6 @@ class LoginViewController: UIViewController, UITextFieldDelegate, UIScrollViewDe
 
     }
     
-    //Mark: Common function to alert Users
-    func alertUser (title: String, message: String, dismissButton: String) {
-        let alert = UIAlertController(title: title, message: message, preferredStyle: .Alert)
-        let action = UIAlertAction(title: dismissButton, style: .Cancel, handler: nil)
-        alert.addAction(action)
-        presentViewController(alert, animated: true, completion: nil)
-    }
     
     /* Mark: Text Field Delegates */
     

@@ -142,9 +142,7 @@ class InfoPostViewController: UIViewController, UITextFieldDelegate, MKMapViewDe
                     } else {
                         UdacityParseClient.alertUser(self, title: "Error", message: "Unable to find place", dismissButton: "Retry")
                     }
-
                 }
-
             }
         }
 
@@ -246,7 +244,6 @@ class InfoPostViewController: UIViewController, UITextFieldDelegate, MKMapViewDe
         
         //Media URL text field white font
         mediaURLTextField.attributedPlaceholder = NSAttributedString(string: "Enter Media URL", attributes: [NSForegroundColorAttributeName: UIColor.whiteColor()])
-
     }
     
     /* Mark: Text Field Delegate methods */

@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 class TabViewController: UITabBarController {
-    var students = [UdacityStudent]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
