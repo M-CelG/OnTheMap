@@ -49,6 +49,8 @@ class ShareStudentData {
             let logoutTask = FBSDKLoginManager()
             logoutTask.logOut()
         }
+        UdacityParseClient.sharedInstance().mediaURLText = nil
+        UdacityParseClient.sharedInstance().objectID = nil
     }
     
     class func sharedInstance() -> ShareStudentData {
